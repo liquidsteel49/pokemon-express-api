@@ -3,3 +3,5 @@ This is the back-end for the "Who's that Pokemon?" application. This is based of
 It interacts with the Mongoose api by requiring mongoose at the top of the files.
 
 deployed Heroku: secure-reaches-50075
+
+ERD: https://imgur.com/YhTarAc
