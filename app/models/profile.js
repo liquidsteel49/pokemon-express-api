@@ -7,8 +7,8 @@ const profileSchema = new mongoose.Schema({
   },
   fav_poke_id: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'Poke_list'
+    ref: 'Poke_list',
+    required: true
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
