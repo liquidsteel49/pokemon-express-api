@@ -30,28 +30,28 @@ const router = express.Router()
 
 // INDEX
 // GET /poke_lists
-router.get('/poke_lists', requireToken, (req, res) => {
+router.get('/pokeLists', requireToken, (req, res) => {
   PokeList.find()
-    .then(poke_lists => {
+    .then(pokeLists => {
       // `poke_lists` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
       // apply `.toObject` to each one
-      return poke_lists.map(poke_list => poke_list.toObject())
+      return pokeLists.map(pokeList => pokeList.toObject())
     })
     // respond with status 200 and JSON of the poke_lists
-    .then(poke_lists => res.status(200).json({ poke_lists: poke_lists }))
+    .then(pokeLists => res.status(200).json({ pokeLists: pokeLists }))
     // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
 
 // SHOW
 // GET /poke_lists/5a7db6c74d55bc51bdf39793
-router.get('/poke_lists/:id', requireToken, (req, res) => {
+router.get('/pokeLists/:id', requireToken, (req, res) => {
   // req.params.id will be set based on the `:id` in the route
   PokeList.findById(req.params.id)
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "poke_list" JSON
-    .then(poke_list => res.status(200).json({ poke_list: poke_list.toObject() }))
+    .then(pokeList => res.status(200).json({ pokeList: pokeList.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
