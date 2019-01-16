@@ -1,5 +1,3 @@
-// make sure to customize
-
 const mongoose = require('mongoose')
 
 const pokeListSchema = new mongoose.Schema({
@@ -16,7 +14,7 @@ const pokeListSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    visable: {
+    visible: {
       type: String,
       required: true
     }
