@@ -56,4 +56,21 @@ router.get('/pokeLists/:id', requireToken, (req, res) => {
     .catch(err => handle(err, res))
 })
 
+// CREATE
+// POST /pokeLists
+router.post('/pokeLists', requireToken, (req, res) => {
+  // set owner of new pokeList to be current user
+  // req.body.pokeList.owner = req.user.id
+
+  PokeList.create(req.body.poke_list)
+    // respond to succesful `create` with status 201 and JSON of new "example"
+    .then(poke_list => {
+      res.status(201).json({ poke_list: poke_list.toObject() })
+    })
+    // if an error occurs, pass it off to our error handler
+    // the error handler needs the error message and the `res` object so that it
+    // can send an error message back to the client
+    .catch(err => handle(err, res))
+})
+
 module.exports = router

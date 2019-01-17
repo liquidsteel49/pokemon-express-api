@@ -1,7 +1,7 @@
 #!/bin/bash
 
 API="http://localhost:4741"
-URL_PATH="/poke_list"
+URL_PATH="/pokeLists"
 
 curl "${API}${URL_PATH}" \
   --include \
