@@ -28,6 +28,22 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
+// INDEX
+// GET /profiles
+router.get('/profile', requireToken, (req, res) => {
+  Profile.find()
+    .then(profiles => {
+      // `examples` will be an array of Mongoose documents
+      // we want to convert each one to a POJO, so we use `.map` to
+      // apply `.toObject` to each one
+      return profiles.map(profile => profile.toObject())
+    })
+    // respond with status 200 and JSON of the examples
+    .then(profiles => res.status(200).json({ profiles: profiles }))
+    // if an error occurs, pass it to the handler
+    .catch(err => handle(err, res))
+})
+
 // SHOW
 // GET /profiles/5a7db6c74d55bc51bdf39793
 router.get('/profile/:id', requireToken, (req, res) => {
