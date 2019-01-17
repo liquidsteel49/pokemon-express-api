@@ -73,4 +73,55 @@ router.post('/pokeLists', requireToken, (req, res) => {
     .catch(err => handle(err, res))
 })
 
+// UPDATE
+// PATCH /examples/5a7db6c74d55bc51bdf39793
+router.patch('/pokeLists/:id', requireToken, (req, res) => {
+  // if the client attempts to change the `owner` property by including a new
+  // owner, prevent that by deleting that key/value pair
+  // delete req.body.pokeList.owner
+
+  console.log(req.params)
+  PokeList.findById(req.params.id)
+    .then(handle404)
+    .then(pokeList => {
+      // pass the `req` object and the Mongoose record to `requireOwnership`
+      // it will throw an error if the current user isn't the owner
+      // requireOwnership(req, pokeList)
+
+      // the client will often send empty strings for parameters that it does
+      // not want to update. We delete any key/value pair where the value is
+      // an empty string before updating
+      console.log(req.body.pokeList)
+      Object.keys(req.body.pokeList).forEach(key => {
+        if (req.body.pokeList[key] === '') {
+          delete req.body.pokeList[key]
+        }
+      })
+
+      // pass the result of Mongoose's `.update` to the next `.then`
+      return pokeList.update(req.body.pokeList)
+    })
+    // if that succeeded, return 204 and no JSON
+    .then(() => res.sendStatus(204))
+    // if an error occurs, pass it to the handler
+    .catch(err => handle(err, res))
+})
+
+// DESTROY
+// DELETE /examples/5a7db6c74d55bc51bdf39793
+router.delete('/pokeLists/:id', requireToken, (req, res) => {
+  PokeList.findById(req.params.id)
+    .then(handle404)
+    .then(pokeList => {
+      // throw an error if current user doesn't own `example`
+      // requireOwnership(req, pokeList)
+      // delete the example ONLY IF the above didn't throw
+      pokeList.remove()
+    })
+    // send back 204 and no content if the deletion succeeded
+    .then(() => res.sendStatus(204))
+    // if an error occurs, pass it to the handler
+    .catch(err => handle(err, res))
+})
+
 module.exports = router
