@@ -48,7 +48,7 @@ router.get('/profile', requireToken, (req, res) => {
 // GET /profiles/5a7db6c74d55bc51bdf39793
 router.get('/profile/:id', requireToken, (req, res) => {
   // req.params.id will be set based on the `:id` in the route
-  Profile.findById(req.params.id)
+  Profile.findOne({ owner: req.params.id })
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "profile" JSON
     .then(profile => res.status(200).json({ profile: profile.toObject() }))
@@ -80,7 +80,7 @@ router.patch('/profile/:id', requireToken, (req, res) => {
   // owner, prevent that by deleting that key/value pair
   delete req.body.profile.owner
 
-  Profile.findById(req.params.id)
+  Profile.findOne({ owner: req.params.id })
     .then(handle404)
     .then(profile => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
@@ -108,7 +108,7 @@ router.patch('/profile/:id', requireToken, (req, res) => {
 // DESTROY
 // DELETE /profiles/5a7db6c74d55bc51bdf39793
 router.delete('/profile/:id', requireToken, (req, res) => {
-  Profile.findById(req.params.id)
+  Profile.findOne({ owner: req.params.id })
     .then(handle404)
     .then(profile => {
       // throw an error if current user doesn't own `profile`
