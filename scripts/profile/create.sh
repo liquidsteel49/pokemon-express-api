@@ -9,11 +9,9 @@ curl "${API}${URL_PATH}" \
   --header "Content-Type: application/json" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
-    "profile": {
       "name": "'"${NAME}"'",
       "fav_poke_id": "'"${FAV_POKE_ID}"'",
       "owner": "'"${OWNER}"'"
-    }
   }'
 
 echo

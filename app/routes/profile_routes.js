@@ -2,9 +2,11 @@
 const express = require('express')
 // Passport docs: http://www.passportjs.org/docs/
 const passport = require('passport')
+const mongoose = require('mongoose')
 
 // pull in Mongoose model for profiles
 const Profile = require('../models/profile.js')
+const Poke_list = require('../models/poke_list.js')
 
 // we'll use this to intercept any errors that get thrown and send them
 // back to the client with the appropriate status code
@@ -60,17 +62,56 @@ router.get('/profile/:id', requireToken, (req, res) => {
 // POST /profiles
 router.post('/profile', requireToken, (req, res) => {
   // set owner of new profile to be current user
-  req.body.profile.owner = req.user.id
+  let id = mongoose.Types.ObjectId(req.user.id)
+  req.body.owner = id
 
-  Profile.create(req.body.profile)
-    // respond to succesful `create` with status 201 and JSON of new "profile"
+  Poke_list.findOne({ poke_num: req.body.fav_poke_id })
+    .then(poke => {
+      return poke._id
+    })
+    .then(pokeID => {
+      req.body.fav_poke_id = pokeID
+      return Profile.create(req.body)
+      // respond to succesful `create` with status 201 and JSON of new "profile"
+      // .then(profile => {
+      //   res.status(201).json({ profile: profile.toObject() })
+      // })
+      // // if an error occurs, pass it off to our error handler
+      // // the error handler needs the error message and the `res` object so that it
+      // // can send an error message back to the client
+      // .catch(err => console.log(err))
+    })
     .then(profile => {
+      console.log(res)
       res.status(201).json({ profile: profile.toObject() })
     })
-    // if an error occurs, pass it off to our error handler
-    // the error handler needs the error message and the `res` object so that it
-    // can send an error message back to the client
     .catch(err => handle(err, res))
+  // // let dave = Poke_list.findOne({ poke_num: req.body.fav_poke_id }).exec(function (err, poke) {
+  // //   if (err) {
+  // //     console.log(err)
+  // //   } else if (poke) {
+  // //     return poke
+  // //   } else {
+  // //     console.log('NOOOOO!')
+  // //   }
+  // // })
+  // let dave = Poke_list.findOne({ poke_num: req.body.fav_poke_id }).toObject()
+
+  // let poke = Poke_list.findOne({ poke_num: req.body.fav_poke_id })
+  // // poke.then(function (doc) { req.body.fav_poke_id = doc._id })
+
+  // req.body.fav_poke_id = Poke_list.findOne({ poke_num: req.user.fav_poke_id })._id
+  // console.log(req.body)
+
+  // Profile.create(req.body)
+  //   // respond to succesful `create` with status 201 and JSON of new "profile"
+  //   .then(profile => {
+  //     res.status(201).json({ profile: profile.toObject() })
+  //   })
+  //   // if an error occurs, pass it off to our error handler
+  //   // the error handler needs the error message and the `res` object so that it
+  //   // can send an error message back to the client
+  //   .catch(err => handle(err, res))
 })
 
 // UPDATE

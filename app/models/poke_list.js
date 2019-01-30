@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 const pokeListSchema = new mongoose.Schema({
   poke_num: {
     type: Number,
-    required: true
+    required: true,
+    min: 1,
+    max: 151
   },
   name: {
     type: String,
