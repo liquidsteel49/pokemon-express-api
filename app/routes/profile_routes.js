@@ -48,12 +48,21 @@ router.get('/profile', requireToken, (req, res) => {
 
 // SHOW
 // GET /profiles/5a7db6c74d55bc51bdf39793
-router.get('/profile/:id', requireToken, (req, res) => {
+router.get('/profile/:owner', (req, res) => {
+  console.log(req.params)
   // req.params.id will be set based on the `:id` in the route
-  Profile.findOne({ owner: req.params.id })
-    .then(handle404)
+  Profile.findOne({ owner: req.params.owner })
+    // .then(handle404)
+    // .then(profile =>
+    //   Poke_list.findOne({ poke_num: profile.fav_poke_id })
+    //     .then(poke => {
+    //       profile.poke_name = poke.name
+    //       return profile
+    //     })
+    // )
     // if `findById` is succesful, respond with 200 and "profile" JSON
-    .then(profile => res.status(200).json({ profile: profile.toObject() }))
+    .then(profile => res.status(200).json({ body: profile.toObject() }))
+    .then(console.log(res))
     // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
@@ -82,7 +91,6 @@ router.post('/profile', requireToken, (req, res) => {
       // .catch(err => console.log(err))
     })
     .then(profile => {
-      console.log(res)
       res.status(201).json({ profile: profile.toObject() })
     })
     .catch(err => handle(err, res))
