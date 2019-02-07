@@ -47,11 +47,13 @@ router.get('/pokeLists', requireToken, (req, res) => {
 // SHOW
 // GET /poke_lists/5a7db6c74d55bc51bdf39793
 router.get('/pokeLists/:id', requireToken, (req, res) => {
+  console.log('req', req)
   // req.params.id will be set based on the `:id` in the route
   PokeList.findById(req.params.id)
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "poke_list" JSON
-    .then(pokeList => res.status(200).json({ pokeList: pokeList.toObject() }))
+    .then(pokeList => res.status(200).json({ body: pokeList.toObject() }))
+    .then(console.log(res.body))
     // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
