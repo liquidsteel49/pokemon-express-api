@@ -48,7 +48,7 @@ router.get('/profile', requireToken, (req, res) => {
 
 // SHOW
 // GET /profiles/5a7db6c74d55bc51bdf39793
-router.get('/profile/:owner', (req, res) => {
+router.get('/profile/:owner', requireToken, (req, res) => {
   // req.params.id will be set based on the `:id` in the route
   Profile.findOne({ owner: req.params.owner })
     // .then(handle404)
@@ -61,6 +61,7 @@ router.get('/profile/:owner', (req, res) => {
     // )
     // if `findById` is succesful, respond with 200 and "profile" JSON
     .then(profile => res.status(200).json({ body: profile.toObject() }))
+    .then(console.log(res))
     // if an error occurs, pass it to the handler
     .catch(err => handle(err, res))
 })
