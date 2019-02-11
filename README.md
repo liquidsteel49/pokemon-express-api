@@ -20,6 +20,28 @@ When an answer is selected, the silouette img component will be replaced with a 
 
 In later versions the user will be able to look up pokemon imgs even when they are not playing through a "pokedex" component.
 
+API Endpoints
+
+Authentication:
+
+POST | /sign-up | Header- N/A | Body- Credentials
+
+POST | /sign-on | Header- N/A | Body- Credentials
+
+PATCH | /change-password | Header- Token | Body- Password
+
+DELETE | /sign-out | Header- Token | Body- N/A
+
+Profile Actions:
+
+POST | /profile | Header- Token | Body- name, fav_poke_id, owner
+
+DELETE | /profile | Header- Token | Body- N/A
+
+GET | /profile:id | Header- Token | Body- N/A
+
+PATCH | /profile:id | Header- Token | Body- name, fav_poke_id
+
 Unsolved Problems: - Need to get profile to render the created profile or create profile page on clicking the nav bar.
 - Will not display profile after creating profile. Provides error "TypeError: Cannot read property '_id' of undefined".
 - Need to provide way to update profile.
